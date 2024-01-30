@@ -1,0 +1,20 @@
+<div class="container mt-4">
+  <h1><%= @list.name %></h1>
+
+  <% if @list.image_url.present? %>
+    <img src="<%= @list.image_url %>" alt="<%= @list.name %> Image" class="img-fluid mb-4">
+  <% end %>
+
+  <%= render 'bookmarks/form', bookmark: @bookmark %>
+
+  <h2 class="mt-4">Bookmarks:</h2>
+  <ul class="list-group">
+    <% @bookmarks.each do |bookmark| %>
+      <li class="list-group-item">
+        <%= bookmark.comment %>
+        <%= link_to 'Delete Bookmark', list_bookmark_path(@list, bookmark), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm float-right' %>
+      </li>
+    <% end %>
+  </ul>
+  <%= link_to 'Back to Lists', lists_path, class: 'btn btn-success mt-3' %>
+</div>
