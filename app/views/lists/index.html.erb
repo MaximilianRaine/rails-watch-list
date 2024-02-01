@@ -4,6 +4,7 @@
   <div class="list-group">
     <% @lists.each do |list| %>
       <%= link_to list.name, list_path(list), class: 'list-group-item list-group-item-action' %>
+      <%= link_to 'Delete List', destroy_list_path(list), method: :delete, class: 'btn btn-danger btn-sm float-right' %>
     <% end %>
   </div>
   <%= link_to 'Add a New List', new_list_path, class: 'btn btn-success mt-3' %>

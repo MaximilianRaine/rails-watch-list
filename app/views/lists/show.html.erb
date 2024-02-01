@@ -1,20 +1,34 @@
 <div class="container mt-4">
+  <%= image_tag @list.image_url, class: "img-fluid mb-4" if @list.image_url.present? %>
+
   <h1><%= @list.name %></h1>
 
-  <% if @list.image_url.present? %>
-    <img src="<%= @list.image_url %>" alt="<%= @list.name %> Image" class="img-fluid mb-4">
-  <% end %>
-
-  <%= render 'bookmarks/form', bookmark: @bookmark %>
+  <%= render 'bookmarks/form', list: @list, bookmark: @bookmark %>
 
   <h2 class="mt-4">Bookmarks:</h2>
   <ul class="list-group">
     <% @bookmarks.each do |bookmark| %>
       <li class="list-group-item">
-        <%= bookmark.comment %>
-        <%= link_to 'Delete Bookmark', list_bookmark_path(@list, bookmark), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm float-right' %>
+        <%= link_to bookmark.movie.title, bookmark.movie %>
+        - <%= bookmark.comment %>
+        <%= link_to 'Delete Bookmark', list_bookmark_path(@list, bookmark), method: :delete, class: 'btn btn-danger btn-sm float-right' %>
       </li>
     <% end %>
   </ul>
-  <%= link_to 'Back to Lists', lists_path, class: 'btn btn-success mt-3' %>
+
+<ul>
+  <% @movies.each do |movie| %>
+    <li>
+      <% if movie.poster_url.present? %>
+        <%= image_tag movie.poster_url, class: "img-thumbnail" %>
+      <% else %>
+        <p>No poster available</p>
+      <% end %>
+      <h3><%= movie.title %></h3>
+      <p><%= movie.overview %></p>
+    </li>
+  <% end %>
+</ul>
+
+  <%= link_to 'Back to Lists', lists_path, class: 'btn btn-primary mt-3' %>
 </div>

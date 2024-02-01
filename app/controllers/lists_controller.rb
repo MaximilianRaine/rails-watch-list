@@ -6,12 +6,11 @@ class ListsController < ApplicationController
   end
 
   def show
+    @list = List.find(params[:id])
+    @bookmarks = @list.bookmarks
     @bookmark = Bookmark.new
-    @bookmarks = @list&.bookmarks || []
-    puts "Debug: @list - #{@list.inspect}"
-    puts "Debug: @bookmarks - #{@bookmarks.inspect}"
+    @movies = @list.movies
   end
-
 
   def new
     @list = List.new
@@ -21,24 +20,26 @@ class ListsController < ApplicationController
     @list = List.new(list_params)
 
     if @list.save
-      redirect_to @list, notice: 'List was successfully created.'
+      redirect_to @list
     else
       render :new
     end
   end
 
   def destroy
+    @list = List.find(params[:id])
     @list.destroy
-    redirect_to lists_path, notice: 'List was successfully deleted.'
+    redirect_to lists_path
   end
 
   private
   def set_list
     @list = List.includes(:bookmarks).find_by(id: params[:id])
     unless @list
-      redirect_to lists_path, alert: 'List not found'
+      redirect_to lists_path
     end
   end
+
   def list_params
     params.require(:list).permit(:name, :image_url)
   end
